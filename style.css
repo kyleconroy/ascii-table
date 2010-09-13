@@ -1,0 +1,21 @@
+#ascii-table {
+    font-family: Courier, monospace;
+    width: 800px;
+    font-size: 12px;
+    text-align: left;
+    line-height: 11px;
+    border: 0;
+}
+
+#ascii-table thead th {
+    border-bottom: 1px solid black;
+}
+
+#ascii-table .char {
+    color: red;
+}
+
+#ascii-table .dec {
+    border-left: 1px solid black;
+    padding-left: 3px;
+}
