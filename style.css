@@ -1,8 +1,8 @@
 #ascii-table {
     font-family: Courier, monospace;
-    width: 800px;
     font-size: 12px;
-    text-align: left;
+    min-width: 140px;
+    text-align: right;
     line-height: 11px;
     border: 0;
 }
@@ -15,7 +15,6 @@
     color: red;
 }
 
-#ascii-table .dec {
-    border-left: 1px solid black;
-    padding-left: 3px;
+#ascii-table td {
+    padding: 1px 3px;
 }

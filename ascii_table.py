@@ -44,30 +44,17 @@ print f.read()
 print """
   </style>
 </head>
-<body>
-<table id="ascii-table" cellspacing=0>
+<body>"""
+
+"""
+<table class="ascii-table" cellspacing=0>
   <thead>
     <tr>
       <th>Dec</th>
       <th>Hx</th>
       <th>Oct</th>
+      <th>Html</th>
       <th>Char</th>
-      <th></th>
-      <th>Dec</th>
-      <th>Hx</th>
-      <th>Oct</th>
-      <th>Html</th>
-      <th>Chr</th>
-      <th>Dec</th>
-      <th>Hx</th>
-      <th>Oct</th>
-      <th>Html</th>
-      <th>Chr</th>
-      <th>Dec</th>
-      <th>Hx</th>
-      <th>Oct</th>
-      <th>Html</th>
-      <th>Chr</th>
     </tr>
   </thead>
   <tbody>"""
@@ -76,27 +63,32 @@ for i in range(32):
     print "    <tr>"
 
     octal = "000" + str(oct(i))
-    print "      <td>%d</td>" % i
-    print "      <td>%s</td>" % hex(i).upper()[2:]
-    print "      <td>%s</td>" % octal[-3:]
+    print "      <td class=\"dec\">%d</td>" % i
+    print "      <td class=\"hex\">%s</td>" % hex(i).upper()[2:]
+    print "      <td class=\"oct\">%s</td>" % octal[-3:]
+    print "      <td class=\"html\"></td>"
     print "      <td class=\"char\">%s</td>" % ascii[i][0]
-    print "      <td>(%s)</td>" % ascii[i][1]
+    # print "      <td clss>(%s)</td>" % ascii[i][1]
 
-    for char in [i+32, i+64, i+96]:
-        octal = "000" + str(oct(char))
-        print "      <td class=\"dec\">%d</td>" % char
-        print "      <td>%s</td>" % hex(char).upper()[2:]
-        print "      <td>%s</td>" % octal[-3:]
-        print "      <td>&amp;#%d;</td>" % char
-        print "      <td class=\"char\">",
-        if char == 32:
-            print "Space",
-        elif char == 127:
-            print "DEL",
-        else:
-            print "%s" % chr(char).upper(),
-            print "</td>"
+    print "    </tr>"
 
+for char in range(33,128):
+    print "    <tr>"
+    octal = "000" + str(oct(char))
+    print "      <td class=\"dec\">%d</td>" % char
+    print "      <td class=\"hex\">%s</td>" % hex(char).upper()[2:]
+    print "      <td class=\"oct\">%s</td>" % octal[-3:]
+    print "      <td class=\"html\">&amp;#%d;</td>" % char
+    print "      <td class=\"char\">",
+    if char == 32:
+        print "Space",
+    elif char == 127:
+        print "DEL",
+    else:
+        print "%s" % chr(char).upper(),
+        print "</td>"
+    print "      <td></td>"
+        
     print "    </tr>"
 
 print "  </tbody>"
