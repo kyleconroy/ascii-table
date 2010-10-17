@@ -1,3 +1,7 @@
+import logging
+import optparse
+import math
+
 ascii = [
     ("NUL", "null"),
     ("SOH", "start of heading"),
@@ -33,64 +37,66 @@ ascii = [
     ("US","unit seperator"),
 ]
 
+parser = optparse.OptionParser()
+(options, args) = parser.parse_args()
+
+if len(args) != 1:
+    parser.error("Incorrect number of arguments")
+
+COLUMNS = int(args[0])
+ROWS = math.ceil(127.0 / COLUMNS)
+TABLE_HEADER ="<th>Dec</th><th>Hx</th><th>Oct</th><th class=\"html\">Html</th><th class=\"char\">Char</th>"
+
+# HTML
+html =  "<!DOCTYPE><html><head><title>ASCII Table</title>"
+
+# Style
 f = open("style.css")
+html += "<style>" + f.read() + "</style></head>"
 
-print """<!DOCTYPE>
-<html>
-<head>
-  <title>ASCII Table</title>
-  <style>"""
-print f.read()
-print """
-  </style>
-</head>
-<body>"""
+# Table
+html += "<body><table id=\"ascii-table\" cellspacing=0><thead>"
 
-"""
-<table class="ascii-table" cellspacing=0>
-  <thead>
-    <tr>
-      <th>Dec</th>
-      <th>Hx</th>
-      <th>Oct</th>
-      <th>Html</th>
-      <th>Char</th>
-    </tr>
-  </thead>
-  <tbody>"""
+# Table Header
+html += "<tr>"
 
-for i in range(32):
-    print "    <tr>"
+for i in range(COLUMNS):
+    html += TABLE_HEADER
 
+html += "</tr>"
+
+html += "</thead><tbody>"
+
+def table_row(i):
     octal = "000" + str(oct(i))
-    print "      <td class=\"dec\">%d</td>" % i
-    print "      <td class=\"hex\">%s</td>" % hex(i).upper()[2:]
-    print "      <td class=\"oct\">%s</td>" % octal[-3:]
-    print "      <td class=\"html\"></td>"
-    print "      <td class=\"char\">%s</td>" % ascii[i][0]
-    # print "      <td clss>(%s)</td>" % ascii[i][1]
-
-    print "    </tr>"
-
-for char in range(33,128):
-    print "    <tr>"
-    octal = "000" + str(oct(char))
-    print "      <td class=\"dec\">%d</td>" % char
-    print "      <td class=\"hex\">%s</td>" % hex(char).upper()[2:]
-    print "      <td class=\"oct\">%s</td>" % octal[-3:]
-    print "      <td class=\"html\">&amp;#%d;</td>" % char
-    print "      <td class=\"char\">",
-    if char == 32:
-        print "Space",
-    elif char == 127:
-        print "DEL",
+    row =  "<td class=\"dec\">%d</td>" % i
+    row += "<td class=\"hex\">%s</td>" % hex(i).upper()[2:]
+    row += "<td class=\"oct\">%s</td>" % octal[-3:]
+    if i < 32:
+        row += "<td class=\"html\"></td>"
+        row += "<td class=\"char\">%s</td>" % ascii[i][0]
     else:
-        print "%s" % chr(char).upper(),
-        print "</td>"
-    print "      <td></td>"
-        
-    print "    </tr>"
+        row += "<td class=\"html\">&amp;#%d;</td>" % i
+        row += "<td class=\"char\">"
+        if i == 32:
+            row += "Space"
+        elif i == 127:
+            row += "DEL"
+        else:
+            row += "%s" % chr(i).upper()
+            row += "</td>"
+    return row
 
-print "  </tbody>"
-print "</table>"
-print "</body></html>"
+for i in range(ROWS):
+    html += "<tr>"
+    for p in range(COLUMNS):
+        char = int(i + (ROWS * p))
+        if char < 128:
+            html += table_row(char)
+    html += "</tr>"
+
+html += "</tbody>"
+html += "</table>"
+html += "</body></html>"
+
+print html

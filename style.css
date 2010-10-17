@@ -1,7 +1,8 @@
 #ascii-table {
     font-family: Courier, monospace;
     font-size: 12px;
-    min-width: 140px;
+    width: 600px;
+    min-width: 500px;
     text-align: right;
     line-height: 11px;
     border: 0;
@@ -11,10 +12,19 @@
     border-bottom: 1px solid black;
 }
 
-#ascii-table .char {
+#ascii-table thead .char {
+    text-align: left;
+}
+
+#ascii-table tbody .char {
     color: red;
+    text-align: left;
 }
 
 #ascii-table td {
     padding: 1px 3px;
+}
+
+#ascii-table .html {
+    padding: 1px 6px 1px 3px;
 }
